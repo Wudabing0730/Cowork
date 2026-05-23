@@ -39,17 +39,20 @@ interface Props {
   onToggle: (id: number, completed: boolean) => Promise<void>;
   onDelete: (id: number) => Promise<void>;
   onReorder: (orderedTodos: Todo[]) => void;
+  onEdit: (todo: Todo) => void;
 }
 
 function SortableTodoItem({
   todo,
   onToggle,
   onDelete,
+  onEdit,
   isDragging,
 }: {
   todo: Todo;
   onToggle: (id: number, completed: boolean) => Promise<void>;
   onDelete: (id: number) => Promise<void>;
+  onEdit: (todo: Todo) => void;
   isDragging: boolean;
 }) {
   const {
@@ -74,13 +77,13 @@ function SortableTodoItem({
       {...listeners}
     >
       <div style={{ opacity: isDragging ? 0.3 : 1 }}>
-        <TodoItem todo={todo} onToggle={onToggle} onDelete={onDelete} />
+        <TodoItem todo={todo} onToggle={onToggle} onDelete={onDelete} onEdit={onEdit} />
       </div>
     </div>
   );
 }
 
-export default function TodoList({ todos, onToggle, onDelete, onReorder }: Props) {
+export default function TodoList({ todos, onToggle, onDelete, onReorder, onEdit }: Props) {
   const [activeDragId, setActiveDragId] = useState<number | null>(null);
 
   const sensors = useSensors(
@@ -132,6 +135,7 @@ export default function TodoList({ todos, onToggle, onDelete, onReorder }: Props
                 todo={todo}
                 onToggle={onToggle}
                 onDelete={onDelete}
+                onEdit={onEdit}
                 isDragging={activeDragId === todo.id}
               />
             </div>
@@ -147,7 +151,7 @@ export default function TodoList({ todos, onToggle, onDelete, onReorder }: Props
               border: '1px solid var(--grid-line-strong)',
             }}
           >
-            <TodoItem todo={activeTodo} onToggle={onToggle} onDelete={onDelete} />
+            <TodoItem todo={activeTodo} onToggle={onToggle} onDelete={onDelete} onEdit={onEdit} />
           </div>
         ) : null}
       </DragOverlay>

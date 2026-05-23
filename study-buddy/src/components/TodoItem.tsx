@@ -20,6 +20,7 @@ interface Props {
   onToggle?: (id: number, completed: boolean) => Promise<void>;
   onDelete?: (id: number) => Promise<void>;
   onLike?: (id: number) => Promise<void>;
+  onEdit?: (todo: Todo) => void;
 }
 
 function isOverdue(dueDate: string): boolean {
@@ -38,7 +39,7 @@ const tagConfig: Record<string, { color: string; bg: string }> = {
   '其他': { color: '#5C5C5C', bg: '#F3F1ED' },
 };
 
-export default function TodoItem({ todo, variant = 'own', onToggle, onDelete, onLike }: Props) {
+export default function TodoItem({ todo, variant = 'own', onToggle, onDelete, onLike, onEdit }: Props) {
   const [expanded, setExpanded] = useState(false);
   const isCompleted = todo.completed === 1;
   const overdue = !isCompleted && isOverdue(todo.dueDate);
@@ -151,15 +152,28 @@ export default function TodoItem({ todo, variant = 'own', onToggle, onDelete, on
               </button>
             ) : null
           ) : (
-            <button
-              onClick={() => onDelete?.(todo.id)}
-              className="opacity-0 group-hover:opacity-100 transition-opacity p-0.5"
-              style={{ color: 'var(--text-tertiary)' }}
-            >
-              <svg width="13" height="13" viewBox="0 0 15 15" fill="none">
-                <path d="M4 4l7 7M11 4l-7 7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-              </svg>
-            </button>
+            <div className="flex items-center gap-1">
+              {!isCompleted && onEdit && (
+                <button
+                  onClick={() => onEdit(todo)}
+                  className="opacity-0 group-hover:opacity-100 transition-opacity p-0.5"
+                  style={{ color: 'var(--text-tertiary)' }}
+                >
+                  <svg width="13" height="13" viewBox="0 0 15 15" fill="none">
+                    <path d="M10.5 2.5l2 2-8.5 8.5H2v-2l8.5-8.5z" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              )}
+              <button
+                onClick={() => onDelete?.(todo.id)}
+                className="opacity-0 group-hover:opacity-100 transition-opacity p-0.5"
+                style={{ color: 'var(--text-tertiary)' }}
+              >
+                <svg width="13" height="13" viewBox="0 0 15 15" fill="none">
+                  <path d="M4 4l7 7M11 4l-7 7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
           )}
         </div>
       </div>

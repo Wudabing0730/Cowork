@@ -7,6 +7,7 @@ import TodoList from '@/components/TodoList';
 import TodoItem from '@/components/TodoItem';
 import TagFilterBar from '@/components/TagFilterBar';
 import Pomodoro from '@/components/Pomodoro';
+import EditTodoModal from '@/components/EditTodoModal';
 
 interface Todo {
   id: number;
@@ -46,6 +47,7 @@ export default function DashboardPage() {
   const [pairLoading, setPairLoading] = useState(false);
   const [pendingRequests, setPendingRequests] = useState<PendingRequest[]>([]);
   const [nudged, setNudged] = useState(false);
+  const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
 
   const fetchData = useCallback(async () => {
     const params = new URLSearchParams();
@@ -119,6 +121,18 @@ export default function DashboardPage() {
     if (res.ok) {
       const data = await res.json();
       setPartnerTodos(prev => prev.map(t => t.id === id ? { ...t, likes: data.likes } : t));
+    }
+  };
+
+  const saveEditTodo = async (id: number, title: string, description: string, tag: string, priority: string, dueDate: string) => {
+    const res = await fetch(`/api/todos/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, description, tag, priority, dueDate }),
+    });
+    if (res.ok) {
+      setEditingTodo(null);
+      fetchData();
     }
   };
 
@@ -282,7 +296,7 @@ export default function DashboardPage() {
               </p>
             </div>
           ) : (
-            <TodoList todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} onReorder={handleReorder} />
+            <TodoList todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} onReorder={handleReorder} onEdit={setEditingTodo} />
           )}
         </div>
 
@@ -402,6 +416,10 @@ export default function DashboardPage() {
           )}
         </div>
       </div>
+
+      {editingTodo && (
+        <EditTodoModal todo={editingTodo} onSave={saveEditTodo} onClose={() => setEditingTodo(null)} />
+      )}
     </div>
   );
 }
