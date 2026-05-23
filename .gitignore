@@ -1,0 +1,38 @@
+# Sensitive files
+*.pem
+*.key
+
+# Claude local settings
+.claude/
+
+# Deploy scripts (contain server IPs / keys)
+deploy.py
+deploy.sh
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# TypeScript build info
+*.tsbuildinfo
+next-env.d.ts

@@ -1,0 +1,220 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-root: #F9F6F0;
+  --bg-surface: #FEFCF7;
+  --bg-hover: #F3EFE6;
+  --bg-muted: #F5F1EA;
+  --grid-line: rgba(0, 0, 0, 0.04);
+  --grid-line-strong: rgba(0, 0, 0, 0.07);
+  --border: rgba(0, 0, 0, 0.05);
+  --border-strong: rgba(0, 0, 0, 0.09);
+  --text-primary: #1C1C1C;
+  --text-secondary: #5C5C5C;
+  --text-tertiary: #949494;
+  --accent: #C41E3A;
+  --accent-strong: #A01830;
+  --accent-light: #FDF2F2;
+  --accent-dim: #FBE8EA;
+  --accent-text: #FFFFFF;
+  --success: #5B8C5A;
+  --success-light: #EEF5ED;
+  --warn: #D4952B;
+  --warn-bg: #FDF8F0;
+  --danger: #C53030;
+  --danger-bg: #FEF4F4;
+  --gold: #C4943E;
+  --gold-light: #FBF6ED;
+  --shadow-color: rgba(28, 28, 28, 0.08);
+  --shadow-md-color: rgba(28, 28, 28, 0.04);
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+}
+
+.dark {
+  --bg-root: #1C1A18;
+  --bg-surface: #252320;
+  --bg-hover: #2E2C28;
+  --bg-muted: #22201D;
+  --grid-line: rgba(255, 255, 255, 0.04);
+  --grid-line-strong: rgba(255, 255, 255, 0.07);
+  --border: rgba(255, 255, 255, 0.05);
+  --border-strong: rgba(255, 255, 255, 0.09);
+  --text-primary: #E8E4DC;
+  --text-secondary: #9E9A90;
+  --text-tertiary: #6B6860;
+  --accent: #E85545;
+  --accent-strong: #F07060;
+  --accent-light: #2A1F1E;
+  --accent-dim: #2D2120;
+  --accent-text: #FFFFFF;
+  --success: #6BA368;
+  --success-light: #1E2620;
+  --warn: #D4952B;
+  --warn-bg: #2A2218;
+  --danger: #C53030;
+  --danger-bg: #2A1C1C;
+  --gold: #C4943E;
+  --gold-light: #2A2418;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --shadow-md-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Grain texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+body {
+  background: var(--bg-root);
+  color: var(--text-primary);
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'SimSun', 'Noto Serif', Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Focus rings — cinnabar accent */
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Smooth transitions */
+a, button, input, select, textarea {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+/* Refined hover — subtle raise with soft glow */
+.ink-hover {
+  box-shadow: 0 1px 2px var(--shadow-md-color);
+  transform: translateY(0);
+}
+.ink-hover:hover {
+  box-shadow: 0 4px 12px var(--shadow-color);
+  transform: translateY(-1px);
+}
+
+/* Decorative double-line separator */
+.double-line {
+  position: relative;
+}
+.double-line::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--grid-line-strong);
+  box-shadow: 0 3px 0 var(--grid-line);
+}
+
+/* Gold seal effect for completed items */
+.seal-gold {
+  background: linear-gradient(135deg, var(--gold-light), #FDF3E0);
+  border-color: rgba(196, 148, 62, 0.3);
+}
+
+/* Serif heading utility */
+.serif-display {
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', serif;
+  letter-spacing: 0.02em;
+}
+
+/* Small label with generous spacing */
+.label-spaced {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Ink-inspired decorative blobs */
+.ink-blob {
+  position: absolute;
+  border-radius: 60% 40% 55% 45% / 45% 55% 45% 55%;
+  filter: blur(60px);
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+/* ── Draggable Tag Filter Bar ── */
+
+/* 6-dot grip handle */
+.tag-grip {
+  display: grid;
+  grid-template-columns: repeat(2, 3px);
+  grid-template-rows: repeat(3, 3px);
+  gap: 2px;
+  padding: 2px;
+  cursor: grab;
+  opacity: 0.35;
+  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+}
+.tag-grip:hover {
+  opacity: 0.7;
+}
+.tag-grip:active {
+  cursor: grabbing;
+}
+.tag-grip::before,
+.tag-grip::after {
+  display: none;
+}
+.tag-grip-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Collision avoidance animation */
+.tag-sortable {
+  transition: transform 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  touch-action: none;
+}
+
+/* Source item ghosted while dragging */
+.tag-dragging {
+  opacity: 0.3;
+}
+
+/* Floating drag overlay */
+.tag-drag-overlay {
+  cursor: grabbing;
+  transform: scale(1.06);
+  box-shadow: 0 8px 24px rgba(196, 30, 58, 0.18), 0 2px 6px rgba(28, 28, 28, 0.1);
+  border-radius: var(--radius-sm);
+}
+
+/* Active glow ring for selected tag */
+.tag-active-glow {
+  box-shadow: 0 0 0 1.5px var(--accent), 0 0 10px rgba(196, 30, 58, 0.25);
+}
+
+/* Tag count badge */
+.tag-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 999px;
+  background: var(--accent-light);
+  color: var(--accent);
+}
